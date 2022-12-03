@@ -5,7 +5,7 @@ import re
 
 # Settings
 ## Studenplan URL CAVE: replace webcal with HTTP
-cal_url = "http://lernziele.charite.de/zend/plan/ical/studiengang/Modellstudiengang2/zeitsemester/SoSe2022/fachsemester/ind/sid/10613/token/4e9f27a3bfcb-djeVz2aC"
+cal_url = "http://lernziele.charite.de/zend/plan/ical/studiengang/Modellstudiengang2/XXXXX"
 ## Lernziel-Datei aus LLP
 file_lernziele = "files/export.xlsx"
 
