@@ -17,7 +17,7 @@ ignore_holiday = True # Work-in-progress, no functionality as of now
 dailynote_format = "%Y-%m-%d"
 dailynote_header = "# Uni"
 target_path = "files/obsidian_export/"
-write_mode = "w" # Use a+ if files already exist
+write_mode = "w" # Use a(ppend) if files already exist
 
 ## Format String for LV-names
 name_regex = "(.*! )?([äöüÄÖÜ\w]{1,5}.?):\s([\w\W]*)\s\(([\w\W]*),\s([\w\W]*)\)"
