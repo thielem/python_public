@@ -5,10 +5,11 @@ import re
 
 # Settings
 ## Studenplan URL CAVE: replace webcal with HTTP
-cal_url = "http://lernziele.charite.de/zend/plan/ical/studiengang/Modellstudiengang2/XXXXX"
+cal_url = "http://lernziele.charite.de/zend/XXXXXX"
 ## Lernziel-Datei aus LLP
 file_lernziele = "files/export.xlsx"
 
+ignore_type = ["POL","MWS"]
 only_future_events = True
 ignore_holiday = True # Work-in-progress, no functionality as of now
 
@@ -60,6 +61,11 @@ events["lv_name"] = lv_name
 events["lv_modul"] = lv_modul
 events["lv_mw"] = lv_mw
 
+# Delete ignored event types
+events = events[~events.lv_type.isin(ignore_type)]
+# Delete past events
+if only_future_events:
+    events = events[events.date >= pd.Timestamp.now(tz="UTC")].reset_index()
 
 # Import Lernziele
 lz = pd.read_excel(file_lernziele)
@@ -78,15 +84,17 @@ for i, e in events.iterrows():
 #     ├── Lernziele
 
 events.sort_values(by="date",inplace=True)
+
+
 events_daily = events.groupby(events.date.dt.date)
 
 for date, items in events_daily:
-    print(date)
     path = target_path + date.strftime(dailynote_format) + ".md"
+    print(f"creating {path}")
     # Write dailynote files 
     with open(path, write_mode, encoding="utf-8") as f:
         f.write(f"{dailynote_header}\n")
         for i, e in items.iterrows():
-            f.write(f"## {e.lv_name}\n")
+            f.write(f"## {e.lv_name} ({e.lv_type})\n")
             for lz in e.Lernziele:
                 f.write(f"- {lz}\n")
