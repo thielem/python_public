@@ -22,7 +22,6 @@ write_mode = "w" # Use a(ppend) if files already exist
 ## Format String for LV-names
 name_regex = "(.*! )?([äöüÄÖÜ\w]{1,5}.?):\s([\w\W]*)\s\(([\w\W]*),\s([\w\W]*)\)"
 
-
 # Get Calendar items and convert to DataFrame
 cal = Calendar(requests.get(cal_url).text)
 
@@ -32,8 +31,7 @@ for e in cal.events:
     e_names.append(e.name)
     e_begin.append(e.begin)
 
-e_dict = {"name":e_names,"start":e_begin}
-events = pd.DataFrame(e_dict)
+events = pd.DataFrame({"name":e_names,"start":e_begin})
 
 # Basic conversions and preparatory regex to the name column
 events["date"] = pd.to_datetime(events.start, utc=True, format="%Y-%m-%dT%H:%M:%S+00:00")
@@ -84,8 +82,6 @@ for i, e in events.iterrows():
 #     ├── Lernziele
 
 events.sort_values(by="date",inplace=True)
-
-
 events_daily = events.groupby(events.date.dt.date)
 
 for date, items in events_daily:
@@ -98,3 +94,4 @@ for date, items in events_daily:
             f.write(f"## {e.lv_name} ({e.lv_type})\n")
             for lz in e.Lernziele:
                 f.write(f"- {lz}\n")
+                
